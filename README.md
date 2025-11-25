@@ -6,11 +6,11 @@ A collection of production-ready AI agent projects demonstrating expertise acros
 
 This portfolio showcases **senior-level AI engineering skills** through hands-on projects that solve real problems using different agentic AI frameworks. Each project demonstrates distinct patterns and capabilities:
 
-| Project | Framework | Pattern | Status |
-|---------|-----------|---------|--------|
+| Project | Framework(s) | Pattern | Status |
+|---------|--------------|---------|--------|
 | [Career Copilot](#-career-copilot) | Semantic Kernel | Autonomous Tool Orchestration | ✅ Complete |
 | [SQL Query Agent](#-sql-query-agent) | LangGraph | Self-Correction Loops | ✅ Complete |
-| [Code Review Crew](#-code-review-crew) | AutoGen | Multi-Agent Collaboration | 🔜 Coming Soon |
+| [Code Review Crew](#-code-review-crew) | AutoGen + LangGraph | Multi-Agent + Iterative Fixing | ✅ Complete |
 
 ---
 
@@ -44,11 +44,7 @@ An intelligent agentic AI system that autonomously helps users find jobs, match 
 ```
 
 ### Tech Stack
-- Microsoft Semantic Kernel
-- Azure OpenAI (GPT-4)
-- Streamlit
-- SQLite
-- SerpAPI
+`Semantic Kernel` `Azure OpenAI` `GPT-4` `Streamlit` `SQLite` `SerpAPI`
 
 ### Links
 - 📁 [View Project](https://github.com/bryan-lolordo/career-copilot)
@@ -108,12 +104,7 @@ User: "Show me employee salary percentiles by department"
 ```
 
 ### Tech Stack
-- LangGraph
-- LangChain
-- OpenAI GPT-4
-- Streamlit
-- SQLite
-- SQLParse
+`LangGraph` `LangChain` `OpenAI GPT-4` `Streamlit` `SQLite` `SQLParse`
 
 ### Links
 - 📁 [View Project](https://github.com/bryan-lolordo/sql-query-agent)
@@ -123,22 +114,100 @@ User: "Show me employee salary percentiles by department"
 
 ## 👥 Code Review Crew
 
-**Framework:** AutoGen  
-**Pattern:** Multi-Agent Collaboration
+**Frameworks:** AutoGen + LangGraph  
+**Pattern:** Multi-Agent Collaboration + Iterative Fixing Workflow
 
-*🔜 Coming Soon*
+A multi-agent AI code review system that combines AutoGen's multi-agent collaboration with LangGraph's iterative fixing workflows. Get production-ready code reviews from specialized AI agents, then watch as issues are automatically fixed.
 
-A multi-agent code review system where specialized AI agents collaborate to provide comprehensive code analysis.
+### Key Features
+- 🤖 **6 Specialized Agents** - Each focused on a specific review domain
+- 🔧 **Hybrid Fixing** - Pattern-based (fast, free) + LLM fallback (smart, adaptive)
+- 🔄 **Iterative Workflow** - Fixes issues one-by-one with testing after each change
+- 📊 **Real-time Progress** - See each iteration, pattern match, and fix applied
+- 🔍 **Code Comparison** - Side-by-side original vs. fixed code view
 
-### Planned Features
-- 🔍 **Reviewer Agent** - Finds bugs and logic issues
-- 🔒 **Security Agent** - Identifies vulnerabilities
-- ⚡ **Performance Agent** - Spots optimization opportunities
-- 📝 **Style Agent** - Enforces code standards
-- 🎯 **Coordinator Agent** - Synthesizes feedback
+### Specialized Agents
+| Agent | Role |
+|-------|------|
+| 🔍 **CodeAnalyzer** | Identifies code smells, anti-patterns, PEP 8 violations |
+| 🔒 **SecurityReviewer** | Detects SQL injection, XSS, weak crypto, hardcoded secrets |
+| ⚡ **PerformanceOptimizer** | Analyzes complexity, finds bottlenecks |
+| 🧪 **TestGenerator** | Recommends comprehensive test cases |
+| 🎯 **ReviewOrchestrator** | Coordinates workflow and synthesizes feedback |
+| 🐳 **CodeExecutor** | Safely executes code in Docker sandbox |
 
-### Why AutoGen?
-Unlike single-agent systems, AutoGen enables multiple specialized agents to **debate, discuss, and collaborate** - perfect for code review where multiple perspectives improve quality.
+### Before & After Example
+
+**Input Code:**
+```python
+def get_user(username):
+    query = f"SELECT * FROM users WHERE name = '{username}'"
+    return db.execute(query)
+
+def hash_password(password):
+    import hashlib
+    return hashlib.md5(password.encode()).hexdigest()
+
+API_KEY = "sk-1234567890abcdef"
+```
+
+**Issues Found:**
+- ❌ SQL Injection vulnerability (Critical)
+- ❌ Weak MD5 cryptography (Critical)  
+- ❌ Hardcoded API key (High)
+- ❌ Import inside function (Medium)
+
+**Fixed Code:**
+```python
+import hashlib
+import os
+
+def get_user(username):
+    query = "SELECT * FROM users WHERE name = ?"
+    return db.execute(query, (username,))
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+API_KEY = os.getenv("API_KEY")
+```
+
+### Architecture
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     STAGE 1: AUTOGEN REVIEW                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  User Code → ReviewOrchestrator → CodeAnalyzer              │
+│                                 → SecurityReviewer          │
+│                                 → PerformanceOptimizer      │
+│                                 → TestGenerator             │
+│                                 → Final Report              │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│                    STAGE 2: LANGGRAPH FIXING                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Issues → [Fix Issue → Test Code → Route] → Fixed Code      │
+│               ↑                      ↓                      │
+│               └────── Continue ──────┘                      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Hybrid Fixing Approach
+| Fix Type | Speed | Cost | Success Rate |
+|----------|-------|------|--------------|
+| Pattern-Based | ~0.1s/issue | $0 | 100% (matched patterns) |
+| LLM Fallback | ~2-5s/issue | ~$0.01-0.03 | ~85% first attempt |
+| **Overall** | ~30-60s (10 issues) | ~$0.05-0.15 | **~90%** |
+
+### Tech Stack
+`AutoGen` `LangGraph` `OpenAI GPT-4` `Streamlit` `Docker` `Python AST`
+
+### Links
+- 📁 [View Project](https://github.com/bryan-lolordo/code-review-crew)
+- 📖 [Architecture Docs](https://github.com/bryan-lolordo/code-review-crew/blob/main/ARCHITECTURE.md)
 
 ---
 
@@ -147,55 +216,80 @@ Unlike single-agent systems, AutoGen enables multiple specialized agents to **de
 | Aspect | Semantic Kernel | LangGraph | AutoGen |
 |--------|----------------|-----------|---------|
 | **Best For** | Tool orchestration | Cyclical workflows | Multi-agent teams |
-| **Pattern** | Plugin-based autonomy | State machines | Conversations |
+| **Pattern** | Plugin-based autonomy | State machines | Agent conversations |
 | **Strength** | Enterprise integration | Retry/refinement loops | Agent collaboration |
 | **Complexity** | Medium | Medium-High | High |
 | **Use Case** | Copilots, assistants | Self-correcting agents | Team simulations |
+
+### Why Different Frameworks?
+
+Each project was built with the **right tool for the job**:
+
+- **Career Copilot** → Semantic Kernel: Needed plugin architecture and Azure integration
+- **SQL Query Agent** → LangGraph: Needed cyclical retry loops with state
+- **Code Review Crew** → AutoGen + LangGraph: Needed both multi-agent debate AND iterative fixing
 
 ---
 
 ## 🎓 Skills Demonstrated
 
 ### AI/ML Engineering
-- ✅ Multiple agentic AI frameworks (Semantic Kernel, LangGraph, AutoGen)
+- ✅ Multiple agentic frameworks (Semantic Kernel, LangGraph, AutoGen)
+- ✅ Multi-agent system design and coordination
 - ✅ Prompt engineering and optimization
 - ✅ State management in AI workflows
-- ✅ Error handling and graceful degradation
-- ✅ Self-improving AI patterns
+- ✅ Hybrid AI approaches (pattern-matching + LLM)
+- ✅ Self-improving and self-correcting AI patterns
 
 ### Software Engineering
 - ✅ Production-ready code architecture
 - ✅ API integration (OpenAI, Azure, SerpAPI)
 - ✅ Database design and safe query execution
 - ✅ Web application development (Streamlit)
-- ✅ Documentation and technical writing
+- ✅ Docker containerization for code execution
+- ✅ Comprehensive documentation
 
 ### System Design
-- ✅ State machine design
-- ✅ Plugin/modular architecture
-- ✅ Multi-agent coordination
+- ✅ State machine design (LangGraph)
+- ✅ Plugin/modular architecture (Semantic Kernel)
+- ✅ Multi-agent coordination (AutoGen)
 - ✅ Retry and fallback strategies
 - ✅ Quality-based routing
+- ✅ Two-stage pipeline architecture
 
 ---
 
 ## 🚀 Future Projects
 
-### Evaluation Framework
-- Agent performance metrics and testing
+### Agent Evaluation Framework
+- Performance metrics and testing harness
 - A/B testing for prompts and models
 - Regression testing for AI quality
+- Success rate tracking over time
 
-### Latency Optimization
-- Streaming responses
-- Parallel execution
-- Smart caching strategies
-- Model routing (fast vs. accurate)
+### Latency Optimization System
+- Streaming responses for real-time UX
+- Parallel execution strategies
+- Smart caching with TTL
+- Model routing (fast vs. accurate paths)
 
 ### RAG System
 - Document Q&A with vector databases
 - Retrieval-augmented generation
-- Context management
+- Context window management
+- Multi-document synthesis
+
+---
+
+## 📊 Portfolio Stats
+
+| Metric | Value |
+|--------|-------|
+| **Frameworks Mastered** | 3 (Semantic Kernel, LangGraph, AutoGen) |
+| **Total Projects** | 3 |
+| **Unique Patterns** | 5+ (tool orchestration, self-correction, multi-agent, hybrid fixing, state machines) |
+| **Lines of Code** | ~5,000+ |
+| **Documentation** | Full architecture docs for each project |
 
 ---
 
@@ -207,7 +301,8 @@ AI Engineer specializing in agentic AI systems and GenAI applications.
 
 - 🔧 **Focus:** Production-ready AI agents
 - 🛠️ **Frameworks:** Semantic Kernel, LangGraph, AutoGen
-- 💼 **Goal:** Building AI systems that think, learn, and improve
+- 🎯 **Expertise:** Multi-agent systems, self-correcting AI, tool orchestration
+- 💼 **Goal:** Building AI systems that think, learn, collaborate, and improve
 
 ### Connect
 - [LinkedIn](https://www.linkedin.com/in/bryanlolordo/)
@@ -225,6 +320,6 @@ MIT License - See individual project repositories for details.
 
 **Built with ❤️ using Agentic AI patterns**
 
-*Demonstrating enterprise-grade AI agent development* 🎯
+*Demonstrating enterprise-grade AI agent development across multiple frameworks* 🎯
 
 </div>
